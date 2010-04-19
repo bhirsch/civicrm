@@ -55,7 +55,8 @@ class CRM_Core_Block {
         ADD             = 4,
         LANGSWITCH      = 5,
         EVENT           = 6,
-        FULLTEXT_SEARCH = 7;
+        FULLTEXT_SEARCH = 7,
+        CIVICRM_CONTENT = 8;
     
     /**
      * template file names for the above blocks
@@ -151,6 +152,16 @@ class CRM_Core_Block {
                                        self::FULLTEXT_SEARCH => array(  'template'   => 'FullTextSearch.tpl',
                                                                         'info'       => ts('CiviCRM Full-text Search'),
                                                                         'subject'    => ts('Full-text Search'),
+                                                                        'active'     => true,
+                                                                        'cache'      => BLOCK_CACHE_GLOBAL,
+                                                                        'visibility' => 1,
+                                                                        'weight'     => -94,
+                                                                        'status'     => 0,
+                                                                        'pages'      => 'civicrm*',
+                                                                        'region'     => 'left' ),
+                                       self::CIVICRM_CONTENT => array(  'template'   => 'Content.tpl',
+                                                                        'info'       => ts('CiviCRM'),
+                                                                        'subject'    => ts('CiviCRM'),
                                                                         'active'     => true,
                                                                         'cache'      => BLOCK_CACHE_GLOBAL,
                                                                         'visibility' => 1,
@@ -285,6 +296,9 @@ class CRM_Core_Block {
             $urlArray = array( 'fullTextSearchID'  => CRM_Core_DAO::getFieldValue( 'CRM_Core_DAO_OptionValue',
                                                     'CRM_Contact_Form_Search_Custom_FullText', 'value', 'name' ) );
             self::setProperty( self::FULLTEXT_SEARCH, 'templateValues', $urlArray );
+            break;    
+
+        case self::CIVICRM_CONTENT:
             break;    
 
         case self::RECENTLY_VIEWED:
@@ -562,6 +576,11 @@ class CRM_Core_Block {
         if ( ! self::getProperty( $id, 'active' ) ) {
             return null;
         }
+
+        if ($id == self::CIVICRM_CONTENT) {
+          $output = civicrm_invoke();
+          return $output;
+        }        
 
         require_once 'CRM/Core/Permission.php';
         if ( $id == self::EVENT &&
