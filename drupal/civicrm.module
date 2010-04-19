@@ -232,7 +232,7 @@ function civicrm_block($op = 'list', $delta = 0, $edit = array()) {
     switch($delta) {
       case 0: 
         $block['subject'] = t('CiviCRM');
-        $content['content'] = '';
+        $content['content'] = civicrm_invoke();
         break;
     }
   }
