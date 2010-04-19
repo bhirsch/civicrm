@@ -160,7 +160,6 @@ function civicrm_perm()
  * This hook both declares to Drupal what blocks are provided by the module, and
  * generates the contents of the blocks themselves.
  */
-/*
 function civicrm_block($op='list', $delta='0')
 {
     if ( $op == 'configure' ) {
@@ -222,6 +221,7 @@ function civicrm_menu( )
 /**
  * Implementation of hook_block().
  */
+/*
 function civicrm_block($op = 'list', $delta = 0, $edit = array()) {
   if ($op == 'list') {
     // return the block name for block listing
@@ -238,6 +238,7 @@ function civicrm_block($op = 'list', $delta = 0, $edit = array()) {
   }
   return $block;
 }
+// */
 
 /**
  * Callback for hook_menu()
