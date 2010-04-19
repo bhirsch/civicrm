@@ -200,7 +200,6 @@ function civicrm_block($op='list', $delta='0')
  * find a match, and execute civicrm_foo().
  *
  */
-/*
 function civicrm_menu( )
 {
     if ( ! civicrm_initialize( ) ) {
@@ -218,7 +217,6 @@ function civicrm_menu( )
                                     )
                  );
 }
-// */
 
 /**
  * Implementation of hook_block().
