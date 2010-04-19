@@ -200,6 +200,7 @@ function civicrm_block($op='list', $delta='0')
  * find a match, and execute civicrm_foo().
  *
  */
+/**
 function civicrm_menu( )
 {
     if ( ! civicrm_initialize( ) ) {
@@ -216,6 +217,28 @@ function civicrm_menu( )
                                     )
                  );
 }
+// */
+
+/**
+ * Implementation of hook_block().
+ */
+function civicrm_block($op = 'list', $delta = 0, $edit = array()) {
+  if ($op == 'list') {
+    // return the block name for block listing
+    $blocks[0]['info'] = t('CiviCRM');
+    return $blocks;
+  } else if ($op == 'view') {
+    // return content from CiviCRM inside a block
+    switch($delta) {
+      case 0: 
+        $block['subject'] = t('CiviCRM');
+        $content['content'] = '';
+        break;
+    }
+  }
+  return $block;
+}
+
 
 /**
  * Initialize CiviCRM. Call this function from other modules too if 
