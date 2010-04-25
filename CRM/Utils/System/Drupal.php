@@ -161,6 +161,34 @@ class CRM_Utils_System_Drupal {
     function url($path = null, $query = null, $absolute = false,
                  $fragment = null, $htmlize = true,
                  $frontend = false ) {
+        
+        /**
+         * @TODO Find a better solution for url handling.
+         * 
+         * This is a hack, intended to get CiviCRM links
+         * to play nicely with Open Atrium (PURL + Spaces).
+         *  
+         * Required Open Atrium configuration: 
+         *
+         * 1. Go to Administer -> Site Configuration -> Persistent URL
+         *    (mysite.com/admin/settings/purl)
+         *
+         * 2. Set Group Space's modifier type to "Query string" 
+         *    (by default this is set to "Path").
+         * 
+         * 3. Set Group Space's key to "group". Then save
+         *    configuration.
+         * 
+         * Note: A "group" here is an organic group, from the 
+         * Organic Groups (OG) module. Open Atrium uses the OG Spaces
+         * module to make organic groups into "spaces". Spaces uses
+         * an API provided but the Persistent URL (PURL) module to 
+         * modify URLs accordingly. By default OG spaces use "prefixing"
+         * (e.g. mywebsite.com/mygroup/node/123). But PURL's settings
+         * can be changed to modify the URL differently
+         * (e.g. mywebsite.com/node/123?group=1)
+         */
+
         $config =& CRM_Core_Config::singleton( );
         $script =  'index.php';
 
@@ -175,6 +203,13 @@ class CRM_Utils_System_Drupal {
         $base = $absolute ? $config->userFrameworkBaseURL : $config->useFrameworkRelativeBase;
 
         $separator = $htmlize ? '&amp;' : '&';
+
+        // check for group space
+       $group = $_GET['group'];
+        if ($group) {
+          // add group to url
+          $query = ($query) ? "{$separator}group=$group" : "group=$group";
+        }
 
         if (! $config->cleanURL ) {
             if ( isset( $path ) ) {
